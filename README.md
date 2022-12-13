@@ -18,7 +18,7 @@ Alternatively, after [compilation](README.md#how-to-build "How to Build section"
 npm link
 ```
 
-And then installing into a different project via runng the following command(s) in that project's directory:
+And then installing into a different project via running the following command(s) in that project's directory:
 
 ```console
 npm link player-sounder
@@ -150,7 +150,7 @@ function loopPlayFirst3() {
 
     setTimeout(loopPlayFirst3, 3000);
 }
-loopPlayFirst3();
+setTimeout(loopPlayFirst3, 3000);
 ```
 
 Forces ffplay to be used:
@@ -164,7 +164,7 @@ if (!playerSounder.overridePlayer("ffplay"))
 audioProcess = playerSounder.playFile("FILE NAME GOES HERE");
 
 playerSounder.onError(audioProcess).then((errorCode) => {
-    throw "An error occured while playing file!"});
+    throw "An error occured while playing audio file!"});
 ```
 
 Plays a file with mpv at 400% volume:
