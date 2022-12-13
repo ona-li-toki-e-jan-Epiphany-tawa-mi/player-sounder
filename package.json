@@ -1,0 +1,43 @@
+{
+  "name": "player-sounder",
+  "version": "1.0.0",
+  "description": "Player soundser byer shellinger outer toer oneer ofer theer availableer audioer playerser",
+  "author": "ona li toki e jan Epiphany tawa mi (https://github.com/ona-li-toki-e-jan-Epiphany-tawa-mi)",
+  "license": "MIT",
+  "keywords": [
+    "sound",
+    "audio",
+    "play-sound",
+    "player-sounder",
+    "cli",
+    "mp3"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "node test/index.js"
+  },
+  "dependencies": {
+    "find-exec": "latest"
+  },
+  "devDependencies": {
+    "@types/find-exec": "latest",
+    "@types/node": "latest",
+    "typescript": "^4.9.4"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/ona-li-toki-e-jan-Epiphany-tawa-mi"
+  }
+}
