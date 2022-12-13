@@ -19,22 +19,22 @@ type AudioProcess = ChildProcessWithoutNullStreams;
 
 /**
  * Command line audio players. Must be mp3 compatible.
- * @attention If you alter this run {@link reselectPlayer} for your changes to take effect.
  */
-export let players: string[] = [ "mplayer", "mpv", "ffplay",
-                               , "cvlc" /* from VLC */, "play" /* from SoX(?) */
-			                   , "mpg123", "mpg321" /* Same player, different name */];
+export const players: string[] = [ "mplayer", "mpv", "ffplay",
+                                 , "cvlc" /* from VLC */, "play" /* from SoX(?) */
+			                     , "mpg123", "mpg321" /* Same player, different name */];
 
 /**
  * Various options to supply to each player.
  * Namely makes sure players don't open any windows and exit when done.
  */
-export let playerOptions: Dictionary<string[]> = { ffplay: ["-nodisp", "-autoexit"]
-	                  			          		 , cvlc:   ["--play-and-exit"]};
+export const playerOptions: Dictionary<string[]> = { ffplay: ["-nodisp", "-autoexit"]
+	                  			          		   , cvlc:   ["--play-and-exit"]};
 
 let _player: string | null = null;
 /**
  * Gets the first available player on the system.
+ * On first call, attempts to select a player from {@link players}.
  *
  * @returns The player.
  * @throws If there are no available players.
@@ -47,14 +47,14 @@ export function getAvaliblePlayer(): string {
 }
 
 /**
- * Updates the player to the first available player in {@link players}.
- * @attention If you alter {@link players}, run this for your changes to take effect.
+ * Updates the player to the first available player within the given list.
  *
+ * @param playerList The list of players to select from, defaults to {@link players}.
  * @returns The player.
  * @throws If there are no available players.
  */
-export function reselectPlayer(): string {
-    _player = findExec(players);
+export function reselectPlayer(playerList: string[] = players): string {
+    _player = findExec(playerList);
 
 	if (!_player)
         throw `Unable to find any sound players on the system! (attempted to look for ${players})`;
@@ -85,10 +85,11 @@ export function overridePlayer(player: string): boolean {
  * Launches a child process to play the given audio file.
  * 
  * @param filePath audio file path.
+ * @param options Various options to supply to each player, defaults to {@link playerOptions}.
  * @throws If the file could not be opened.
  *         If there are no available players.
  */
-export function playFile(filePath: string): AudioProcess {
+export function playFile(filePath: string, options: Dictionary<string[]> = playerOptions): AudioProcess {
 	try {
 		fs.accessSync(filePath, R_OK);
 	} catch (error) {
@@ -96,7 +97,7 @@ export function playFile(filePath: string): AudioProcess {
 	}
 
 	const player = getAvaliblePlayer();
-	const args   = (playerOptions[player] || []).concat(filePath);
+	const args   = (options[player] || []).concat(filePath);
 	
     return spawn(player, args);
 }
