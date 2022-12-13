@@ -1,4 +1,4 @@
-const findExec = require("find-exec");
+import findExec = require("find-exec");
 import { ChildProcess, ChildProcessWithoutNullStreams, spawn } from "child_process";
 import * as fs from "fs";
 const R_OK = fs.constants.R_OK;
@@ -19,16 +19,18 @@ type AudioProcess = ChildProcessWithoutNullStreams;
 
 /**
  * Command line audio players. Must be mp3 compatible.
+ * @attention If you alter this run {@link reselectPlayer} for your changes to take effect.
  */
 export let players: string[] = [ "mplayer", "mpv", "ffplay",
                                , "cvlc" /* from VLC */, "play" /* from SoX(?) */
 			                   , "mpg123", "mpg321" /* Same player, different name */];
 
 /**
- * Various options to make sure players don't open any windows and exit when done.
+ * Various options to supply to each player.
+ * Namely makes sure players don't open any windows and exit when done.
  */
 export let playerOptions: Dictionary<string[]> = { ffplay: ["-nodisp", "-autoexit"]
-	                  			          		  , cvlc:   ["--play-and-exit"]};
+	                  			          		 , cvlc:   ["--play-and-exit"]};
 
 let _player: string | null = null;
 /**
@@ -38,14 +40,26 @@ let _player: string | null = null;
  * @throws If there are no available players.
  */
 export function getAvaliblePlayer(): string {
-	if (!_player) {
-		_player = findExec(players);
-
-		if (!_player)
-			throw `Unable to find any sound players on the system! (attempted to look for ${players})`;
-	}
+	if (!_player)
+        reselectPlayer();
 
 	return _player;
+}
+
+/**
+ * Updates the player to the first available player in {@link players}.
+ * @attention If you alter {@link players}, run this for your changes to take effect.
+ *
+ * @returns The player.
+ * @throws If there are no available players.
+ */
+export function reselectPlayer(): string {
+    _player = findExec(players);
+
+	if (!_player)
+        throw `Unable to find any sound players on the system! (attempted to look for ${players})`;
+
+    return _player;
 }
 
 /**
@@ -58,7 +72,7 @@ export function overridePlayer(player: string): boolean {
     let possiblePlayer = findExec(player);
 
     if (possiblePlayer) {
-        _player = player
+        _player = possiblePlayer
         return true;
     }
 
@@ -107,7 +121,7 @@ export function onClose(audioProcess: AudioProcess): Promise<number> {
 }
 
 /** 
- * Pauses an audio process.
+ * Pauses an audio process, does nothing if the process exited.
  * @attention Will terminate process on Windows instead of pausing them.
  * 
  * @param audioProcess The audio-playing child process.
@@ -122,7 +136,7 @@ export function pause(audioProcess: AudioProcess): boolean {
 }
 
 /** 
- * Resumes a previously paused audio process.
+ * Resumes a previously paused audio process, does nothing if the process exited.
  * @attention Will terminate process on Windows instead of resuming them.
  * 
  * @param audioProcess The audio-playing child process.
