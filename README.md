@@ -6,7 +6,7 @@ A beefed-up version of [play-sound](https://github.com/shime/play-sound "play-so
 
 ## Installation
 
-player-sounder can be installed from npm using the following command(s):
+player-sounder can be installed from [npm](https://www.npmjs.com/package/player-sounder "player-sounder npm entry") using the following command(s):
 
 ```console
 npm install player-sounder
