@@ -6,21 +6,21 @@ const R_OK = fs.constants.R_OK;
 /**
  * A mapping between string keys and a given type. Just objects with a specified value type.
  */
-interface Dictionary<Type> {
+export interface Dictionary<Type> {
     [key: string]: Type;
 };
 
 /**
  * More relavent type name for returned processes.
  */
-type AudioProcess = ChildProcessWithoutNullStreams;
+export type AudioProcess = ChildProcessWithoutNullStreams;
 
 
 
 /**
  * Command line audio players. Must be mp3 compatible.
  */
-export const players: string[] = [ "mplayer", "mpv", "ffplay",
+export const players: string[] = [ "mplayer", "mpv", "ffplay"
                                  , "cvlc" /* from VLC */, "play" /* from SoX(?) */
 			                     , "mpg123", "mpg321" /* Same player, different name */];
 
