@@ -50,7 +50,7 @@ A mapping between string keys and a given type. Just objects with a specified va
 
 #### *type AudioProcess*
 
-More relavent type name for returned audio-playing processes. Alias of ChildProcessWithNullStreams from [child_process.](https://nodejs.org/docs/latest-v19.x/api/child_process.html "child_process node.js API page.")
+More relavent type name for returned audio-playing processes. Alias of ChildProcessWithoutNullStreams from [child_process.](https://nodejs.org/docs/latest-v19.x/api/child_process.html "child_process node.js API page.")
 
 ### Constants
 
@@ -64,7 +64,9 @@ Contains: `"mplayer"`, `"mpv"`, `"ffplay"`, `"cvlc"`, `"play"`, `"mpg123"`, and 
 
 A list of command line audio players that are capable of playing audio sourced from a URL. All of them should be mp3 compatible.
 
-Contains: `"mpv"`, `"mplayer"`.
+Contains: `"mpv"`, `"mplayer"`, `"ffplay"`, and `"cvlc"`.
+
+NOTE: SoX and mpg123/mpg321 have URL support, but seem a little unreliable, so I'm not including them.
 
 #### *playerOptions: Dictionary\<string\[\]\>*
 
@@ -73,10 +75,13 @@ Options to supply to each player.
 Should atleast have the options necessary to prevent windows or other graphical hoo-has from being displayed and ensure that the player exits when playback is over.
 
 Contains: 
-- ffplay: [`"-nodisp"`, `"-autoexit"`].
-- cvlc: [`"--play-and-exit"`].
+- ffplay: [`"-nodisp"`, `"-vn"`, `"-loglevel"`, `"quiet"`, `"-autoexit"`].
+- cvlc: [`"--play-and-exit"`, `"--no-video"`, `"--verbose"`, `"0"`].
 - mpv: [`"--no-video"`, `"--no-terminal"`, `"--no-config"`, `"--profile=low-latency"`].
 - mplayer: [`"-nogui"`, `"-vc"`, `"null"`, `"-vo"`, `"null"`, `"-noconfig"`, `"all"`, `"-really-quiet"`].
+- play: [`"--no-show-progress"`, `"-V0"`].
+- mpg123: [`"--quiet"`].
+- mpg321: [`"--quiet"`].
 
 ### Functions
 
@@ -231,6 +236,11 @@ let audioProcess = playFile("FILE NAME GOES HERE", options);
 - Added ability to play from URLs.
 - Added specific options to mpv to reduce latency, prevent video output, disable user-configuration, and prevent any attempts to output text.
 - Added specific options to mplayer to prevent video outputs and GUI usage, disable user-configuration, and reduce the number of attempts to output text.
+- Added specific options to ffplay to prevent text output.
+- Added specific options to cvlc to reduce text output and prevent video output.
+- Added sepcific options to play and mpg321/mpg123 to prevent text output.
+
+Note that text isn't going to appear in the console even if these options are disabled; they just don't need to do it in the first place, so I took lengths to disable it.
 
 ### 1.0.0
 

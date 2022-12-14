@@ -21,27 +21,36 @@ export type AudioProcess = ChildProcessWithoutNullStreams;
  * Command line audio players. Must be mp3 compatible.
  */
 export const players: string[] = [ "mplayer", "mpv", "ffplay"
-                                 , "cvlc" /* from VLC */, "play" /* from SoX(?) */
+                                 , "cvlc" /* VLC */, "play" /* SoX */
 			                     , "mpg123", "mpg321" /* Same player, different name */];
 
 /**
  * A list of command line audio players that are capable of playing audio sourced from a url.
+ * @attention SoX and mpg123/mpg321 have URL support, but seem a little unreliable, so I'm not including them.
  */                            
-export const URLPlayers: string[] = ["mpv", "mplayer"]; //TODO Add more.
+export const URLPlayers: string[] = [ "mpv", "mplayer", "ffplay"
+                                    , "cvlc" /* VLC */]; 
 
 /**
  * Various options to supply to each player.
  * Namely makes sure players don't open any windows and exit when done.
  */
-export const playerOptions: Dictionary<string[]> = { ffplay:  ["-nodisp", "-autoexit"]
-	                  			          		   , cvlc:    ["--play-and-exit"]
+export const playerOptions: Dictionary<string[]> = { ffplay:  [ "-nodisp", "-vn" /* Prevents video output and other visual hoo-has. */
+                                                              , "-loglevel", "quiet"
+                                                              , "-autoexit"]
+	                  			          		   , cvlc:    [ "--play-and-exit"
+                                                              , "--no-video"
+                                                              , "--verbose", "0" /* Reduces unneeded text output. */]
                                                    , mpv:     [ "--no-video"
                                                               , "--no-terminal"         /* Prevents unneeded terminal output. */
                                                               , "--no-config"           /* Prevents any possible conflict with user configuration. */
                                                               , "--profile=low-latency" /* Low-latency specifier to try and play audio ASAP. */]
                                                    , mplayer: [ "-nogui", "-vc", "null", "-vo", "null" /* Prevents video output and other visual hoo-has. */
                                                               , "-noconfig", "all"                     /* Prevents any possible conflict with user configuration. */                                                    
-                                                              , "-really-quiet"]};
+                                                              , "-really-quiet"]
+                                                   , play:    [ "--no-show-progress", "-V0" /* Prevents unneeded terminal output. */]
+                                                   , mpg123:  [ "--quiet"]
+                                                   , mpg321:  [ "--quiet"]};
 
 let _player: string | null = null;
 /**
