@@ -44,7 +44,7 @@ Built files will appear in [dist/.](dist)
 
 ### Types
 
-#### *interface Dictionary<Type>*
+#### *interface Dictionary\<Type\>*
 
 A mapping between string keys and a given type. Just objects with a specified value type.
 
@@ -141,12 +141,12 @@ Loops the first 3 seconds of an audio file indefinitely:
 ```TypeScript
 import { playFile, restart } from "player-sounder";
 
-audioProcess = playFile("FILE NAME GOES HERE");
+let audioProcess = playFile("FILE NAME GOES HERE");
 
 function loopPlayFirst3() {
     audioProcess = restart(audioProcess);
     if (!audioProcess)
-        throw "Unable to restart audio process!";
+        throw new Error("Unable to restart audio process!");
 
     setTimeout(loopPlayFirst3, 3000);
 }
@@ -159,12 +159,12 @@ Forces ffplay to be used:
 import * as playerSounder from "player-sounder";
 
 if (!playerSounder.overridePlayer("ffplay"))
-    throw "Unable to find ffplay!";
+    throw new Error("Unable to find ffplay!");
 
-audioProcess = playerSounder.playFile("FILE NAME GOES HERE");
+let audioProcess = playerSounder.playFile("FILE NAME GOES HERE");
 
 playerSounder.onError(audioProcess).then((errorCode) => {
-    throw "An error occured while playing audio file!"});
+    throw new Error("An error occured while playing audio file!")});
 ```
 
 Plays a file with mpv at 400% volume:
@@ -174,5 +174,5 @@ import { overridePlayer, playFile } from "player-sounder";
 
 overridePlayer("mpv");
 let options = {"mpv": ["--volume=400"]};
-audioProcess = playFile("FILE NAME GOES HERE", options);
+let audioProcess = playFile("FILE NAME GOES HERE", options);
 ```
