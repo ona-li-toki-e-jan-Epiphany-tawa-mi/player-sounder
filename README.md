@@ -4,6 +4,8 @@ Player soundser byer shellinger outer toer oneer ofer theer availableer audioer 
 
 A beefed-up version of [play-sound](https://github.com/shime/play-sound "play-sound GitHub repository") ([npm entry](https://www.npmjs.com/package/play-sound "play-sound npm entry"),) complete with guaranteed operation with mp3 files, a guarantee to exit when audio playback is over (looking at you cvlc,) pausing and resuming playback (on POSIX-compliant systems *only*, uses SIGSTOP and SIGCONT, so a no-no on Windows,) restarting playback irregardless of whether it is currently playing or the file stopped earlier, more robust URL support, and, best of all, TypeScript!
 
+For Windows users, you will need to make sure that the command-line players on your system are present somewhere in the PATH variable, or manually specify them using the file location of the executables.
+
 ## Installation
 
 player-sounder can be installed from [npm](https://www.npmjs.com/package/player-sounder "player-sounder npm entry") using the following command(s):
