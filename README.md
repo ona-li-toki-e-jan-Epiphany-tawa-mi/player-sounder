@@ -223,11 +223,11 @@ playerSounder.onError(audioProcess).then((errorCode) => {
 Plays a file with mpv at 400% volume:
 
 ```TypeScript
-import { overridePlayer, playFile } from "player-sounder";
+import { overridePlayer, playFile, playerOptions } from "player-sounder";
 
 overridePlayer("mpv");
-let options = {"mpv": ["--volume=400"]};
-let audioProcess = playFile("FILE NAME GOES HERE", options);
+let mpvOptions = playerOptions["mpv"].concat("--volume=400");
+let audioProcess = playFile("FILE NAME GOES HERE", {mpv: mpvOptions});
 ```
 
 ## Changelog
