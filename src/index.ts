@@ -1,5 +1,5 @@
 import findExec = require("find-exec");
-import { ChildProcess, ChildProcessWithoutNullStreams, spawn } from "child_process";
+import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import * as fs from "fs";
 const R_OK = fs.constants.R_OK;
 
@@ -54,11 +54,12 @@ export function getAvaliblePlayer(): string {
  * @throws If there are no available players.
  */
 export function reselectPlayer(playerList: string[] = players): string {
-    _player = findExec(playerList);
+    let newPlayer = findExec(playerList);
 
-	if (!_player)
+	if (!newPlayer)
         throw `Unable to find any sound players on the system! (attempted to look for ${players})`;
 
+    _player = newPlayer;
     return _player;
 }
 
