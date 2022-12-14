@@ -1,5 +1,5 @@
 import findExec = require("find-exec");
-import { ChildProcess, ChildProcessWithoutNullStreams, spawn } from "child_process";
+import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import * as fs from "fs";
 const R_OK = fs.constants.R_OK;
 
@@ -21,15 +21,36 @@ export type AudioProcess = ChildProcessWithoutNullStreams;
  * Command line audio players. Must be mp3 compatible.
  */
 export const players: string[] = [ "mplayer", "mpv", "ffplay"
-                                 , "cvlc" /* from VLC */, "play" /* from SoX(?) */
+                                 , "cvlc" /* VLC */, "play" /* SoX */
 			                     , "mpg123", "mpg321" /* Same player, different name */];
+
+/**
+ * A list of command line audio players that are capable of playing audio sourced from a url.
+ * @attention SoX and mpg123/mpg321 have URL support, but seem a little unreliable, so I'm not including them.
+ */                            
+export const URLPlayers: string[] = [ "mpv", "mplayer", "ffplay"
+                                    , "cvlc" /* VLC */]; 
 
 /**
  * Various options to supply to each player.
  * Namely makes sure players don't open any windows and exit when done.
  */
-export const playerOptions: Dictionary<string[]> = { ffplay: ["-nodisp", "-autoexit"]
-	                  			          		   , cvlc:   ["--play-and-exit"]};
+export const playerOptions: Dictionary<string[]> = { ffplay:  [ "-nodisp", "-vn" /* Prevents video output and other visual hoo-has. */
+                                                              , "-loglevel", "quiet"
+                                                              , "-autoexit"]
+	                  			          		   , cvlc:    [ "--play-and-exit"
+                                                              , "--no-video"
+                                                              , "--verbose", "0" /* Reduces unneeded text output. */]
+                                                   , mpv:     [ "--no-video"
+                                                              , "--no-terminal"         /* Prevents unneeded terminal output. */
+                                                              , "--no-config"           /* Prevents any possible conflict with user configuration. */
+                                                              , "--profile=low-latency" /* Low-latency specifier to try and play audio ASAP. */]
+                                                   , mplayer: [ "-nogui", "-vc", "null", "-vo", "null" /* Prevents video output and other visual hoo-has. */
+                                                              , "-noconfig", "all"                     /* Prevents any possible conflict with user configuration. */                                                    
+                                                              , "-really-quiet"]
+                                                   , play:    [ "--no-show-progress", "-V0" /* Prevents unneeded terminal output. */]
+                                                   , mpg123:  [ "--quiet"]
+                                                   , mpg321:  [ "--quiet"]};
 
 let _player: string | null = null;
 /**
@@ -37,7 +58,7 @@ let _player: string | null = null;
  * On first call, attempts to select a player from {@link players}.
  *
  * @returns The player.
- * @throws If there are no available players.
+ * @throws [Error] If there are no available players.
  */
 export function getAvaliblePlayer(): string {
 	if (!_player)
@@ -46,20 +67,53 @@ export function getAvaliblePlayer(): string {
 	return _player;
 }
 
+let _URLPlayer: string | null = null;
+/**
+ * Gets the first available URL player on the system.
+ * On first call, attempts to select a URL player from {@link URLPlayers}.
+ *
+ * @returns The URL player.
+ * @throws [Error] If there are no available URL players.
+ */
+export function getAvalibleURLPlayer(): string {
+    if (!_URLPlayer)
+        reselectURLPlayer();
+
+	return _URLPlayer;
+}
+
 /**
  * Updates the player to the first available player within the given list.
  *
  * @param playerList The list of players to select from, defaults to {@link players}.
  * @returns The player.
- * @throws If there are no available players.
+ * @throws [Error] If there are no available players.
  */
 export function reselectPlayer(playerList: string[] = players): string {
-    _player = findExec(playerList);
+    let newPlayer = findExec(playerList);
 
-	if (!_player)
-        throw `Unable to find any sound players on the system! (attempted to look for ${players})`;
+	if (!newPlayer)
+        throw new Error(`Unable to find any sound players on the system! (attempted to look for ${playerList})`);
 
+    _player = newPlayer;
     return _player;
+}
+
+/**
+ * Updates the URL player to the first available player within the given list.
+ *
+ * @param URLPlayerList The list of players to select from, defaults to {@link URLPlayers}.
+ * @returns The URL player.
+ * @throws [Error] If there are no available URL players.
+ */
+export function reselectURLPlayer(URLPlayerList: string[] = URLPlayers): string {
+    let newPlayer = findExec(URLPlayerList);
+
+	if (!newPlayer)
+        throw new Error(`Unable to find any URL players on the system! (attempted to look for ${URLPlayerList})`);
+
+    _URLPlayer = newPlayer;
+    return _URLPlayer;
 }
 
 /**
@@ -71,12 +125,27 @@ export function reselectPlayer(playerList: string[] = players): string {
 export function overridePlayer(player: string): boolean {
     let possiblePlayer = findExec(player);
 
-    if (possiblePlayer) {
-        _player = possiblePlayer
-        return true;
-    }
+    if (!possiblePlayer) 
+        return false;
 
-    return false;
+    _player = possiblePlayer
+    return true;
+}
+
+/**
+ * Attempts to forcefully set a different URL player.
+ * 
+ * @param URLPlayer The path to the new URL player.
+ * @returns Whether the new URL player was found. If false, the original player is kept.
+ */
+export function overrideURLPlayer(URLPlayer: string): boolean {
+    let possiblePlayer = findExec(URLPlayer);
+
+    if (!possiblePlayer) 
+        return false;
+
+    _URLPlayer = possiblePlayer
+    return true;
 }
 
 
@@ -86,19 +155,33 @@ export function overridePlayer(player: string): boolean {
  * 
  * @param filePath audio file path.
  * @param options Various options to supply to each player, defaults to {@link playerOptions}.
- * @throws If the file could not be opened.
- *         If there are no available players.
+ * @throws [Error] If the file could not be opened.
+ *         [Error] If there are no available players.
  */
 export function playFile(filePath: string, options: Dictionary<string[]> = playerOptions): AudioProcess {
 	try {
 		fs.accessSync(filePath, R_OK);
 	} catch (error) {
-		throw `An error occured while trying to open sound file "${filePath}"; unable to open!". Description: ${error}`;
+		throw new Error(`An error occured while trying to open sound file "${filePath}"; unable to open!". Description: ${error}`);
 	}
 
 	const player = getAvaliblePlayer();
 	const args   = (options[player] || []).concat(filePath);
 	
+    return spawn(player, args);
+}
+
+/**
+ * Launches a child process to play the audio file at the given URL.
+ * 
+ * @param url audio file URL.
+ * @param options Various options to supply to each player, defaults to {@link playerOptions}.
+ * @throws [Error] If there are no available players.
+ */
+export function playURL(url: string, options: Dictionary<string[]> = playerOptions): AudioProcess {
+    const player = getAvalibleURLPlayer();
+    const args   = (options[player] || []).concat(url);
+
     return spawn(player, args);
 }
 
