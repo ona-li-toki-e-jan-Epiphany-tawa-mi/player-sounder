@@ -14,18 +14,6 @@ player-sounder can be installed from [npm](https://www.npmjs.com/package/player-
 npm install player-sounder
 ```
 
-Alternatively, after [compilation](README.md#how-to-build "How to Build section"), you can put a symlink to the compiled library into your system's npm modules root folder by running the following command(s) in the project directory:
-
-```console
-npm link
-```
-
-And then installing into a different project via running the following command(s) in that project's directory:
-
-```console
-npm link player-sounder
-```
-
 ## How to Build
 
 Run the TypeScript compiler using the following command(s) in the project directory:
