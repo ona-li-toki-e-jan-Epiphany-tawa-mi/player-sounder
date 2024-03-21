@@ -2,13 +2,13 @@
 
 Player soundser byer shellinger outer toer oneer ofer theer availableer audioer playerser.
 
-A beefed-up version of [play-sound](https://github.com/shime/play-sound "play-sound GitHub repository") ([npm entry](https://www.npmjs.com/package/play-sound "play-sound npm entry"),) complete with guaranteed operation with mp3 files, a guarantee to exit when audio playback is over (looking at you cvlc,) pausing and resuming playback (on POSIX-compliant systems *only*, uses SIGSTOP and SIGCONT, so a no-no on Windows,) restarting playback irregardless of whether it is currently playing or the file stopped earlier, more robust URL support, and, best of all, TypeScript!
+A beefed-up version of [(CLEARNET) play-sound](https://github.com/shime/play-sound "play-sound GitHub repository") ([(CLEARNET) npm entry](https://www.npmjs.com/package/play-sound "play-sound npm entry"),) complete with guaranteed operation with mp3 files, a guarantee to exit when audio playback is over (looking at you cvlc,) pausing and resuming playback (on POSIX-compliant systems *only*, uses SIGSTOP and SIGCONT, so a no-no on Windows,) restarting playback irregardless of whether it is currently playing or the file stopped earlier, more robust URL support, and, best of all, TypeScript!
 
 For Windows users, you will need to make sure that the command-line players on your system are present somewhere in the PATH variable, or manually specify them using the file location of the executables.
 
 ## Installation
 
-player-sounder can be installed from [npm](https://www.npmjs.com/package/player-sounder "player-sounder npm entry") using the following command(s):
+player-sounder can be installed from [(CLEARNET) npm](https://www.npmjs.com/package/player-sounder "player-sounder npm entry") using the following command(s):
 
 ```console
 npm install player-sounder
@@ -22,13 +22,13 @@ Run the TypeScript compiler using the following command(s) in the project direct
 tsc
 ```
 
-Built files will appear in [dist/.](dist)
+Built files will appear in `dist/`
 
 ## Dependencies
 
 *Development dependencies not listed.*
 
-- [find-exec](https://www.npmjs.com/package/find-exec "find-exec npm entry") ^1.0.2
+- [(CLEARNET) find-exec](https://www.npmjs.com/package/find-exec "find-exec npm entry") ^1.0.2
 
 ## Exposed Features
 
@@ -40,7 +40,7 @@ A mapping between string keys and a given type. Just objects with a specified va
 
 #### *type AudioProcess*
 
-More relavent type name for returned audio-playing processes. Alias of ChildProcessWithoutNullStreams from [child_process.](https://nodejs.org/docs/latest-v19.x/api/child_process.html "child_process node.js API page.")
+More relavent type name for returned audio-playing processes. Alias of ChildProcessWithoutNullStreams from [(CLEARNET) child_process.](https://nodejs.org/docs/latest-v19.x/api/child_process.html "child_process node.js API page.")
 
 ### Constants
 
@@ -64,7 +64,7 @@ Options to supply to each player.
 
 Should atleast have the options necessary to prevent windows or other graphical hoo-has from being displayed and ensure that the player exits when playback is over.
 
-Contains: 
+Contains:
 - ffplay: [`"-nodisp"`, `"-vn"`, `"-loglevel"`, `"quiet"`, `"-autoexit"`].
 - cvlc: [`"--play-and-exit"`, `"--no-video"`, `"--verbose"`, `"0"`].
 - mpv: [`"--no-video"`, `"--no-terminal"`, `"--no-config"`, `"--profile=low-latency"`].
@@ -79,7 +79,7 @@ Contains:
 
 Gets the first available player on the system.
 
-On first call, attempts to select a player from [players.](README.md#players-string "players: string[]")
+On first call, attempts to select a player from `players: string[]`.
 
 Throws an Error if there are no available players.
 
@@ -87,7 +87,7 @@ Throws an Error if there are no available players.
 
 Gets the first available URL player on the system.
 
-On first call, attempts to select a player from [URLPlayers.](README.md#urlplayers-string "URLPlayers: string[]")
+On first call, attempts to select a player from `URLPlayers: string[]`.
 
 Throws an Error if there are no available players.
 
@@ -95,7 +95,7 @@ Throws an Error if there are no available players.
 
 Updates the player to the first available player within the given list.
 
-The list of players defaults to [players](README.md#players-string "players: string[]") when one isn't specified.
+The list of players defaults to `players: string[]` when one isn't specified.
 
 Returns the selected player.
 
@@ -105,7 +105,7 @@ Throws an Error if there are no available players.
 
 Updates the URL player to the first available player within the given list.
 
-The list of URL players defaults to [URLPlayers](README.md#urlplayers-string "URLPlayers: string[]") when one isn't specified.
+The list of URL players defaults to `URLPlayers: string[]` when one isn't specified.
 
 Returns the selected URL player.
 
@@ -130,14 +130,14 @@ Returns `true` if it found the player. If unable (i.e. `false`,) the original pl
 #### *playFile(filePath: string, options: Dictionary\<string\[\]\> = playerOptions): AudioProcess*
 
 Launches a child process to play the given audio file.
- 
+
 `options` are the pool of options for each player. The current player's name is used to get the relavent options from the dictionary.
 
 Throws an Error if the file cannot be accessed or there are no available players.
 
 #### *playURL(url: string, options: Dictionary\<string\[\]\> = playerOptions): AudioProcess*
 
-WARNING: Offers absolutely no URL validation. 
+WARNING: Offers absolutely no URL validation.
 
 Launches a child process to play the audio file at the given URL.
 
@@ -145,7 +145,7 @@ Launches a child process to play the audio file at the given URL.
 
 Throws an Error if the file cannot be accessed or there are no available players.
 
-playURL() can have a resonably large latencey from when it's called to when the sound is played, and it makes no attempt to cache queried audio files; if a sound needs to be played exactly at the time of calling, or it's needed repeatedly, download it and use [playFile()](README.md#playfilefilepath-string-options-dictionarystring--playeroptions-audioprocess "playFile(filePath: string, options: Dictionary<string[]> = playerOptions): AudioProcess") instead.
+playURL() can have a resonably large latencey from when it's called to when the sound is played, and it makes no attempt to cache queried audio files; if a sound needs to be played exactly at the time of calling, or it's needed repeatedly, download it and use `playFile(filePath: string, options: Dictionary<string[]> = playerOptions): AudioProcess` instead.
 
 #### *onError(audioProcess: AudioProcess): Promise\<number\>*
 
@@ -220,7 +220,7 @@ let mpvOptions = playerOptions["mpv"].concat("--volume=400");
 let audioProcess = playFile("FILE NAME GOES HERE", {mpv: mpvOptions});
 ```
 
-## Changelog
+## Release Notes
 
 - `reselectPlayer(playerList: string[] = players): string` now will no longer change the current player unless it manages to locate an avalible one from the given array.
 - Added ability to play from URLs.
@@ -231,7 +231,3 @@ let audioProcess = playFile("FILE NAME GOES HERE", {mpv: mpvOptions});
 - Added sepcific options to play and mpg321/mpg123 to prevent text output.
 
 Note that text isn't going to appear in the console even if these options are disabled; they just don't need to do it in the first place, so I took lengths to disable it.
-
-### 1.0.0
-
-Initial release.
