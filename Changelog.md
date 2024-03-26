@@ -8,7 +8,9 @@
 - Added specific options to cvlc to reduce text output and prevent video output.
 - Added sepcific options to play and mpg321/mpg123 to prevent text output.
 
-Note that text isn't going to appear in the console even if these options are disabled; they just don't need to do it in the first place, so I took lengths to disable it.
+Note that text isn't going to appear in the console even if these options are
+disabled; they just don't need to do it in the first place, so I took lengths to
+disable it.
 
 ## 1.0.0
 
