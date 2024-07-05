@@ -34,7 +34,7 @@ Dependencies:
 There is a `flake.nix` that you can use to generate a development environment
 with `nix develop path:.`.
 
-Install the dependencies from npm:
+Install the node dependencies from npm:
 
 ```console
 npm update
@@ -47,12 +47,6 @@ tsc
 ```
 
 Built files will appear in `dist/`
-
-## Dependencies
-
-*Development dependencies not listed.*
-
-- find-exec (https://www.npmjs.com/package/find-exec) ^1.0.2
 
 ## Exposed Features
 
