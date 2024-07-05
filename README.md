@@ -26,8 +26,13 @@ npm install player-sounder
 
 ## How to Build
 
-You will need the TypeScript compiler and npm installed on your system. There is
-a `shell.nix` that you can use with `nix-shell` to get them.
+Dependencies:
+
+- npm - https://www.npmjs.com
+- TypeScript - https://www.typescriptlang.org
+
+There is a `flake.nix` that you can use to generate a development environment
+with `nix develop path:.`.
 
 Install the dependencies from npm:
 
