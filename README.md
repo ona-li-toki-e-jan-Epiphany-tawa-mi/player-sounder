@@ -1,20 +1,21 @@
 View build status:
 
-- I2P: http://oytjumugnwsf4g72vemtamo72vfvgmp4lfsf6wmggcvba3qmcsta.b32.i2p/hydra/jobset/player-sounder/master/latest-eval
-- Tor: http://4blcq4arxhbkc77tfrtmy4pptf55gjbhlj32rbfyskl672v2plsmjcyd.onion/hydra/jobset/player-sounder/master/latest-eval
+- I2P: [http://oytjumugnwsf4g72vemtamo72vfvgmp4lfsf6wmggcvba3qmcsta.b32.i2p/hydra/jobset/player-sounder/master/latest-eval](http://oytjumugnwsf4g72vemtamo72vfvgmp4lfsf6wmggcvba3qmcsta.b32.i2p/hydra/jobset/player-sounder/master/latest-eval)
+- Tor: [http://4blcq4arxhbkc77tfrtmy4pptf55gjbhlj32rbfyskl672v2plsmjcyd.onion/hydra/jobset/player-sounder/master/latest-eval](http://4blcq4arxhbkc77tfrtmy4pptf55gjbhlj32rbfyskl672v2plsmjcyd.onion/hydra/jobset/player-sounder/master/latest-eval)
 
 # player-sounder
 
 Player soundser byer shellinger outer toer oneer ofer theer availableer audioer
 playerser.
 
-A beefed-up version of play-sound (https://github.com/shime/play-sound |
-https://www.npmjs.com/package/play-sound) complete with guaranteed operation
-with mp3 files, a guarantee to exit when audio playback is over (looking at you
-cvlc,) pausing and resuming playback (on POSIX-compliant systems *only*, uses
-SIGSTOP and SIGCONT, so a no-no on Windows,) restarting playback irregardless of
-whether it is currently playing or the file stopped earlier, more robust URL
-support, and, best of all, TypeScript!
+A beefed-up version of play-sound
+([https://github.com/shime/play-sound](https://github.com/shime/play-sound) |
+[https://www.npmjs.com/package/play-sound](https://www.npmjs.com/package/play-sound))
+complete with guaranteed operation with mp3 files, a guarantee to exit when
+audio playback is over (looking at you cvlc,) pausing and resuming playback (on
+POSIX-compliant systems *only*, uses SIGSTOP and SIGCONT, so a no-no on
+Windows,) restarting playback irregardless of whether it is currently playing or
+the file stopped earlier, more robust URL support, and, best of all, TypeScript!
 
 For Windows users, you will need to make sure that the command-line players on
 your system are present somewhere in the PATH variable, or manually specify them
@@ -23,7 +24,8 @@ using the file location of the executables.
 ## Installation
 
 player-sounder can be installed from npm
-(https://www.npmjs.com/package/player-sounder) using the following command(s):
+([https://www.npmjs.com/package/player-sounder](https://www.npmjs.com/package/player-sounder))
+using the following command(s):
 
 ```console
 npm install player-sounder
@@ -33,8 +35,8 @@ npm install player-sounder
 
 Dependencies:
 
-- npm - https://www.npmjs.com
-- TypeScript - https://www.typescriptlang.org
+- npm - [https://www.npmjs.com](https://www.npmjs.com)
+- TypeScript - [https://www.typescriptlang.org](https://www.typescriptlang.org)
 
 There is a `flake.nix` that you can use to generate a development environment
 with `nix develop path:.`.
@@ -66,7 +68,7 @@ value type.
 
 More relavent type name for returned audio-playing processes. Alias of
 ChildProcessWithoutNullStreams from child_process
-(https://nodejs.org/docs/latest-v19.x/api/child_process.html).
+([https://nodejs.org/docs/latest-v19.x/api/child_process.html](https://nodejs.org/docs/latest-v19.x/api/child_process.html)).
 
 ### Constants
 
